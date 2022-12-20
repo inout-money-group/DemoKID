@@ -75,29 +75,38 @@ class HomePage extends StatelessWidget {
                           return Column(children: [
                             BarcodeWidget(kid: kid),
                             const SizedBox(height: 32),
-                            ElevatedButton(
-                              onPressed: () => _shareKid(context),
-                              child: const Text('UDOSTĘPNIJ KID'),
+                            SizedBox(
+                              width: double.maxFinite,
+                              child: ElevatedButton(
+                                onPressed: () => _shareKid(context),
+                                child: const Text('UDOSTĘPNIJ KID'),
+                              ),
                             ),
                           ]);
                         },
                       );
                     },
                   ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      await context.read<HomeCubit>().generateKid();
-                      viewKidCubit.refresh();
-                    },
-                    child: const Text('POBIERZ KID'),
+                  SizedBox(
+                    width: double.maxFinite,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        await context.read<HomeCubit>().generateKid();
+                        viewKidCubit.refresh();
+                      },
+                      child: const Text('POBIERZ KID'),
+                    ),
                   ),
                   const SizedBox(width: 12),
-                  ElevatedButton(
-                    onPressed: () async {
-                      await context.read<HomeCubit>().deleteKid();
-                      viewKidCubit.refresh();
-                    },
-                    child: const Text('USUŃ KID'),
+                  SizedBox(
+                    width: double.maxFinite,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        await context.read<HomeCubit>().deleteKid();
+                        viewKidCubit.refresh();
+                      },
+                      child: const Text('USUŃ KID'),
+                    ),
                   ),
                 ],
               ),
