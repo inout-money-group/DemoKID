@@ -6,7 +6,9 @@ import 'package:kid_demo/core/widgets/barcode_widget.dart';
 import 'package:kid_demo/features/home/cubit/home_cubit.dart';
 import 'package:kid_demo/features/receive_kid/cubit/receive_kid_cubit.dart';
 import 'package:kid_demo/features/receive_kid/receive_kid_page.dart';
+import 'package:share_plus/share_plus.dart';
 
+import '../../core/widgets/copy_field.dart';
 import 'cubit/view_kid_cubit.dart';
 
 class HomePage extends StatelessWidget {
@@ -49,56 +51,105 @@ class HomePage extends StatelessWidget {
             child: SizedBox(
               width: double.maxFinite,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   BlocBuilder<ViewKidCubit, ViewKidState>(
                     builder: (context, state) {
                       return state.when(
-                        initial: () => const Text(
-                          'Ładowanie identyfikatora KID...',
+                        initial: () => const Padding(
+                          padding: EdgeInsets.only(bottom: 32),
+                          child: Text(
+                            'Ładowanie identyfikatora KID...',
+                          ),
                         ),
                         loaded: (kid) {
                           if (kid == null) {
-                            return const Text(
-                              'Nie dodałeś jeszcze identyfikatora KID, lub nie udało się go załadować.',
+                            return const Padding(
+                              padding: EdgeInsets.only(bottom: 32),
+                              child: Text(
+                                'Nie dodałeś jeszcze identyfikatora KID, lub nie udało się go załadować.',
+                              ),
                             );
                           }
 
-                          return BarcodeWidget(kid: kid);
+                          return Column(children: [
+                            BarcodeWidget(kid: kid),
+                            const SizedBox(height: 32),
+                            ElevatedButton(
+                              onPressed: () => _shareKid(context),
+                              child: const Text('UDOSTĘPNIJ KID'),
+                            ),
+                          ]);
                         },
                       );
                     },
                   ),
-                  const SizedBox(height: 6),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            await context.read<HomeCubit>().generateKid();
-                            viewKidCubit.refresh();
-                          },
-                          child: const Text('POBIERZ KID'),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            await context.read<HomeCubit>().deleteKid();
-                            viewKidCubit.refresh();
-                          },
-                          child: const Text('USUŃ KID'),
-                        ),
-                      )
-                    ],
+                  ElevatedButton(
+                    onPressed: () async {
+                      await context.read<HomeCubit>().generateKid();
+                      viewKidCubit.refresh();
+                    },
+                    child: const Text('POBIERZ KID'),
+                  ),
+                  const SizedBox(width: 12),
+                  ElevatedButton(
+                    onPressed: () async {
+                      await context.read<HomeCubit>().deleteKid();
+                      viewKidCubit.refresh();
+                    },
+                    child: const Text('USUŃ KID'),
                   ),
                 ],
               ),
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Future<void> _shareKid(BuildContext context) async {
+    final kidShare = await context.read<HomeCubit>().getEncryptedKid();
+    if (kidShare == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Nie udało się udostępnić identyfikatora KID. Upewnij się, że wygenerowałeś identyfikator.',
+          ),
+        ),
+      );
+
+      return;
+    }
+
+    await showGeneralDialog(
+      context: context,
+      pageBuilder: (context, _, __) => AlertDialog(
+        title: const Text('Udostępnienie identyfikatora KID'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              'Aby uzyskać dostęp do e-paragonów skojarzonych z Twoim identyfikatorem KID w innej aplikacji:\n1. Skopiuj do schowka poniższe hasło.\n2. Kliknij na przycisk UDOSTĘPNIJ.\n3. Wybierz aplikację, której chcesz udostępnić zaszyfrowany plik z identyfikatorem KID.\n4. Po uruchomieniu się wybranej aplikacji wklej skopiowane hasło.\n\nHasło:\n',
+            ),
+            CopyField(textToCopy: kidShare.encryptionKey),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('ANULUJ'),
+          ),
+          TextButton(
+            onPressed: () async {
+              final fileToShare = XFile(kidShare.encryptedFile.path);
+              await Share.shareXFiles([fileToShare]);
+              Navigator.pop(context);
+              kidShare.encryptedFile.delete();
+            },
+            child: const Text('UDOSTĘPNIJ'),
+          ),
+        ],
       ),
     );
   }

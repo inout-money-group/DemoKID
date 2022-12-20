@@ -30,57 +30,6 @@ class BarcodeWidget extends StatelessWidget {
       child: Column(
         children: [
           SvgPicture.string(bcSvg),
-          const SizedBox(height: 6),
-          ElevatedButton(
-            onPressed: () => _shareKid(context),
-            child: const Text('UDOSTĘPNIJ KID'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Future<void> _shareKid(BuildContext context) async {
-    final kidShare = await context.read<HomeCubit>().getEncryptedKid();
-    if (kidShare == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Nie udało się udostępnić identyfikatora KID. Upewnij się, że wygenerowałeś identyfikator.',
-          ),
-        ),
-      );
-
-      return;
-    }
-
-    await showGeneralDialog(
-      context: context,
-      pageBuilder: (context, _, __) => AlertDialog(
-        title: const Text('Udostępnienie identyfikatora KID'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text(
-              'Aby uzyskać dostęp do e-paragonów skojarzonych z Twoim identyfikatorem KID w innej aplikacji:\n1. Skopiuj do schowka poniższe hasło.\n2. Kliknij na przycisk UDOSTĘPNIJ.\n3. Wybierz aplikację, której chcesz udostępnić zaszyfrowany plik z identyfikatorem KID.\n4. Po uruchomieniu się wybranej aplikacji wklej skopiowane hasło.\n\nHasło:\n',
-            ),
-            CopyField(textToCopy: kidShare.encryptionKey),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('ANULUJ'),
-          ),
-          TextButton(
-            onPressed: () async {
-              final fileToShare = XFile(kidShare.encryptedFile.path);
-              await Share.shareXFiles([fileToShare]);
-              Navigator.pop(context);
-              kidShare.encryptedFile.delete();
-            },
-            child: const Text('UDOSTĘPNIJ'),
-          ),
         ],
       ),
     );
