@@ -138,8 +138,9 @@ class HomePage extends StatelessWidget {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
+            Text(
               'Aby uzyskać dostęp do e-paragonów skojarzonych z Twoim identyfikatorem KID w innej aplikacji:\n1. Skopiuj do schowka poniższe hasło.\n2. Kliknij na przycisk UDOSTĘPNIJ.\n3. Wybierz aplikację, której chcesz udostępnić zaszyfrowany plik z identyfikatorem KID.\n4. Po uruchomieniu się wybranej aplikacji wklej skopiowane hasło.\n\nHasło:\n',
+              style: Theme.of(context).textTheme.bodyText2,
             ),
             CopyField(textToCopy: kidShare.encryptionKey),
           ],
@@ -154,7 +155,6 @@ class HomePage extends StatelessWidget {
               final fileToShare = XFile(kidShare.encryptedFile.path);
               await Share.shareXFiles([fileToShare]);
               Navigator.pop(context);
-              kidShare.encryptedFile.delete();
             },
             child: const Text('UDOSTĘPNIJ'),
           ),

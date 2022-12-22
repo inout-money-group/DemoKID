@@ -2,13 +2,8 @@
 
 import 'package:barcode/barcode.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kid_demo/core/models/kid.dart';
-import 'package:share_plus/share_plus.dart';
-
-import '../../features/home/cubit/home_cubit.dart';
-import 'copy_field.dart';
 
 class BarcodeWidget extends StatelessWidget {
   const BarcodeWidget({super.key, required this.kid});
