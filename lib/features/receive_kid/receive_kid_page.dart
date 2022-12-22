@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kid_demo/core/widgets/kid_widget.dart';
 import 'package:kid_demo/features/home/cubit/view_kid_cubit.dart';
@@ -38,6 +39,7 @@ class ReceiveKidPage extends StatelessWidget {
                 received: (file) {
                   final controller = TextEditingController();
                   return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         'Otrzymanie identyfikatora KID',
@@ -47,12 +49,35 @@ class ReceiveKidPage extends StatelessWidget {
                       const Text(
                         'Aby zapisać udostępniony identyfikator KID, wklej poniżej skopiowane wcześniej hasło i kliknij przycisk ZAPISZ.',
                       ),
-                      const SizedBox(height: 8),
-                      SizedBox(
-                        width: double.maxFinite,
-                        child: TextField(
-                          controller: controller,
-                        ),
+                      const SizedBox(height: 16),
+                      Stack(
+                        children: [
+                          SizedBox(
+                            width: double.maxFinite,
+                            child: TextField(
+                              controller: controller,
+                              maxLength: 16,
+                              decoration: InputDecoration(
+                                border: const OutlineInputBorder(),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.auto,
+                                labelText: 'Hasło',
+                                suffixIcon: IconButton(
+                                  icon: const Icon(
+                                    Icons.paste_rounded,
+                                    color: Colors.black54,
+                                  ),
+                                  onPressed: () async {
+                                    final value =
+                                        await Clipboard.getData('text/plain');
+                                    if (value?.text == null) return;
+                                    controller.text = value!.text!;
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 12),
                       SizedBox(

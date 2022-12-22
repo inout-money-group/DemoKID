@@ -2,13 +2,11 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleVersion</key>
-    <string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionAttributes</key>
-        <dict>
-            <key>NSExtensionActivationRule</key>
+		<dict>
+			<key>NSExtensionActivationRule</key>
 			<string>
 				SUBQUERY (
     				extensionItems,
@@ -18,9 +16,9 @@
         				$attachment,
         				ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "pl.gov.kid"
     				).@count == $extensionItem.attachments.@count
-				).@count > 0
+				).@count &gt; 0
 			</string>
-        </dict>
+		</dict>
 		<key>NSExtensionMainStoryboard</key>
 		<string>MainInterface</string>
 		<key>NSExtensionPointIdentifier</key>
