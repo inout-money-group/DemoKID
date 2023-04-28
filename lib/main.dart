@@ -4,7 +4,11 @@ import 'package:kid_demo/features/home/cubit/home_cubit.dart';
 import 'package:kid_demo/features/home/cubit/view_kid_cubit.dart';
 import 'package:kid_demo/features/home/home_page.dart';
 
-void main() {
+import 'core/dependency_injection/injection_container.dart';
+
+void main() async {
+  configureDependencies();
+
   runApp(const MyApp());
 }
 
@@ -20,8 +24,8 @@ class MyApp extends StatelessWidget {
       ),
       home: MultiBlocProvider(
         providers: [
-          BlocProvider(create: (_) => HomeCubit()),
-          BlocProvider(create: (_) => ViewKidCubit()),
+          BlocProvider(create: (_) => sl<HomeCubit>()),
+          BlocProvider(create: (_) => sl<ViewKidCubit>()),
         ],
         child: const HomePage(),
       ),

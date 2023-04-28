@@ -7,20 +7,25 @@ import 'package:encrypt/encrypt.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:injectable/injectable.dart';
 import 'package:intl/intl.dart';
 import 'package:kid_demo/core/models/kid_share.dart';
+import 'package:kid_demo/domain/kid_repository.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
-import '../../../core/models/kid.dart';
+import '../../../core/config/const.dart';
 
 part 'home_state.dart';
 part 'home_cubit.freezed.dart';
 
+@injectable
 class HomeCubit extends Cubit<HomeState> {
-  HomeCubit() : super(const HomeState.initial()) {
+  HomeCubit(this._kidRepository) : super(const HomeState.initial()) {
     _init();
   }
+
+  final KIDRepository _kidRepository;
 
   StreamSubscription<List<SharedMediaFile>>? _intentDataStreamSubscription;
 
@@ -50,7 +55,9 @@ class HomeCubit extends Cubit<HomeState> {
   Future<KIDShare?> getEncryptedKid() async {
     try {
       //* Get the KID from secure storage
-      final kidString = await const FlutterSecureStorage().read(key: 'kid');
+      final kidString = await const FlutterSecureStorage().read(
+        key: Const.ssKIDKey,
+      );
       if (kidString == null) return null;
 
       //* Encode the KID to a Base64 string
@@ -114,32 +121,34 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> deleteKid() async {
-    await const FlutterSecureStorage().delete(key: 'kid');
+    await const FlutterSecureStorage().delete(key: Const.ssKIDKey);
   }
 
   Future<void> generateKid() async {
-    const publicChars = '0123456789';
-    const privateChars =
-        '${publicChars}AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz';
-    final kid = KID(
-      kidPubliczny: _getRandom(15, publicChars),
-      kidPrywatny: _getRandom(42, privateChars),
-    );
-    await const FlutterSecureStorage().write(
-      key: 'kid',
-      value: jsonEncode(kid.toJson()),
-    );
+    // const publicChars = '0123456789';
+    // const privateChars =
+    //     '${publicChars}AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz';
+    // final kid = KID(
+    //   pub: _getRandom(15, publicChars),
+    //   prv: _getRandom(42, privateChars),
+    // );
+    // await const FlutterSecureStorage().write(
+    //   key: 'kid',
+    //   value: jsonEncode(kid.toJson()),
+    // );
+
+    await _kidRepository.generateKID();
   }
 
-  String _getRandom(int length, String charset) {
-    final rand = Random();
-    return String.fromCharCodes(
-      Iterable.generate(
-        length,
-        (_) => charset.codeUnitAt(rand.nextInt(charset.length)),
-      ),
-    );
-  }
+  // String _getRandom(int length, String charset) {
+  //   final rand = Random();
+  //   return String.fromCharCodes(
+  //     Iterable.generate(
+  //       length,
+  //       (_) => charset.codeUnitAt(rand.nextInt(charset.length)),
+  //     ),
+  //   );
+  // }
 
   @override
   Future<void> close() async {

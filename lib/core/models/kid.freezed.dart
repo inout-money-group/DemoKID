@@ -20,8 +20,9 @@ KID _$KIDFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$KID {
-  String get kidPubliczny => throw _privateConstructorUsedError;
-  String get kidPrywatny => throw _privateConstructorUsedError;
+  String get pub => throw _privateConstructorUsedError;
+  String get prv => throw _privateConstructorUsedError;
+  String get pngBase64 => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -33,7 +34,7 @@ abstract class $KIDCopyWith<$Res> {
   factory $KIDCopyWith(KID value, $Res Function(KID) then) =
       _$KIDCopyWithImpl<$Res, KID>;
   @useResult
-  $Res call({String kidPubliczny, String kidPrywatny});
+  $Res call({String pub, String prv, String pngBase64});
 }
 
 /// @nodoc
@@ -48,17 +49,22 @@ class _$KIDCopyWithImpl<$Res, $Val extends KID> implements $KIDCopyWith<$Res> {
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? kidPubliczny = null,
-    Object? kidPrywatny = null,
+    Object? pub = null,
+    Object? prv = null,
+    Object? pngBase64 = null,
   }) {
     return _then(_value.copyWith(
-      kidPubliczny: null == kidPubliczny
-          ? _value.kidPubliczny
-          : kidPubliczny // ignore: cast_nullable_to_non_nullable
+      pub: null == pub
+          ? _value.pub
+          : pub // ignore: cast_nullable_to_non_nullable
               as String,
-      kidPrywatny: null == kidPrywatny
-          ? _value.kidPrywatny
-          : kidPrywatny // ignore: cast_nullable_to_non_nullable
+      prv: null == prv
+          ? _value.prv
+          : prv // ignore: cast_nullable_to_non_nullable
+              as String,
+      pngBase64: null == pngBase64
+          ? _value.pngBase64
+          : pngBase64 // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -70,7 +76,7 @@ abstract class _$$_KIDCopyWith<$Res> implements $KIDCopyWith<$Res> {
       __$$_KIDCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String kidPubliczny, String kidPrywatny});
+  $Res call({String pub, String prv, String pngBase64});
 }
 
 /// @nodoc
@@ -82,17 +88,22 @@ class __$$_KIDCopyWithImpl<$Res> extends _$KIDCopyWithImpl<$Res, _$_KID>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? kidPubliczny = null,
-    Object? kidPrywatny = null,
+    Object? pub = null,
+    Object? prv = null,
+    Object? pngBase64 = null,
   }) {
     return _then(_$_KID(
-      kidPubliczny: null == kidPubliczny
-          ? _value.kidPubliczny
-          : kidPubliczny // ignore: cast_nullable_to_non_nullable
+      pub: null == pub
+          ? _value.pub
+          : pub // ignore: cast_nullable_to_non_nullable
               as String,
-      kidPrywatny: null == kidPrywatny
-          ? _value.kidPrywatny
-          : kidPrywatny // ignore: cast_nullable_to_non_nullable
+      prv: null == prv
+          ? _value.prv
+          : prv // ignore: cast_nullable_to_non_nullable
+              as String,
+      pngBase64: null == pngBase64
+          ? _value.pngBase64
+          : pngBase64 // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -101,18 +112,20 @@ class __$$_KIDCopyWithImpl<$Res> extends _$KIDCopyWithImpl<$Res, _$_KID>
 /// @nodoc
 @JsonSerializable()
 class _$_KID implements _KID {
-  const _$_KID({required this.kidPubliczny, required this.kidPrywatny});
+  const _$_KID({required this.pub, required this.prv, required this.pngBase64});
 
   factory _$_KID.fromJson(Map<String, dynamic> json) => _$$_KIDFromJson(json);
 
   @override
-  final String kidPubliczny;
+  final String pub;
   @override
-  final String kidPrywatny;
+  final String prv;
+  @override
+  final String pngBase64;
 
   @override
   String toString() {
-    return 'KID(kidPubliczny: $kidPubliczny, kidPrywatny: $kidPrywatny)';
+    return 'KID(pub: $pub, prv: $prv, pngBase64: $pngBase64)';
   }
 
   @override
@@ -120,15 +133,15 @@ class _$_KID implements _KID {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_KID &&
-            (identical(other.kidPubliczny, kidPubliczny) ||
-                other.kidPubliczny == kidPubliczny) &&
-            (identical(other.kidPrywatny, kidPrywatny) ||
-                other.kidPrywatny == kidPrywatny));
+            (identical(other.pub, pub) || other.pub == pub) &&
+            (identical(other.prv, prv) || other.prv == prv) &&
+            (identical(other.pngBase64, pngBase64) ||
+                other.pngBase64 == pngBase64));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, kidPubliczny, kidPrywatny);
+  int get hashCode => Object.hash(runtimeType, pub, prv, pngBase64);
 
   @JsonKey(ignore: true)
   @override
@@ -146,15 +159,18 @@ class _$_KID implements _KID {
 
 abstract class _KID implements KID {
   const factory _KID(
-      {required final String kidPubliczny,
-      required final String kidPrywatny}) = _$_KID;
+      {required final String pub,
+      required final String prv,
+      required final String pngBase64}) = _$_KID;
 
   factory _KID.fromJson(Map<String, dynamic> json) = _$_KID.fromJson;
 
   @override
-  String get kidPubliczny;
+  String get pub;
   @override
-  String get kidPrywatny;
+  String get prv;
+  @override
+  String get pngBase64;
   @override
   @JsonKey(ignore: true)
   _$$_KIDCopyWith<_$_KID> get copyWith => throw _privateConstructorUsedError;
