@@ -8,6 +8,7 @@ import 'package:kid_demo/features/receive_kid/cubit/receive_kid_cubit.dart';
 import 'package:kid_demo/features/receive_kid/receive_kid_page.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../core/dependency_injection/injection_container.dart';
 import '../../core/widgets/copy_field.dart';
 import 'cubit/view_kid_cubit.dart';
 
@@ -24,8 +25,8 @@ class HomePage extends StatelessWidget {
           receivedFile: (file) => Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => BlocProvider(
-                create: (context) => ReceiveKidCubit(),
+              builder: (_) => BlocProvider(
+                create: (_) => sl<ReceiveKidCubit>(),
                 child: ReceiveKidPage(
                   receivedFile: file,
                   viewKidCubit: viewKidCubit,

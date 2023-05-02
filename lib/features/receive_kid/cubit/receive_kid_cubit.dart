@@ -6,6 +6,7 @@ import 'package:encrypt/encrypt.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:injectable/injectable.dart';
 import 'package:path/path.dart';
 
 import '../../../core/models/kid.dart';
@@ -13,6 +14,7 @@ import '../../../core/models/kid.dart';
 part 'receive_kid_state.dart';
 part 'receive_kid_cubit.freezed.dart';
 
+@injectable
 class ReceiveKidCubit extends Cubit<ReceiveKidState> {
   ReceiveKidCubit() : super(const ReceiveKidState.initial());
 

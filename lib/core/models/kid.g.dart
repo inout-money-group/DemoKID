@@ -7,11 +7,13 @@ part of 'kid.dart';
 // **************************************************************************
 
 _$_KID _$$_KIDFromJson(Map<String, dynamic> json) => _$_KID(
-      kidPubliczny: json['kidPubliczny'] as String,
-      kidPrywatny: json['kidPrywatny'] as String,
+      pub: json['pub'] as String,
+      prv: json['prv'] as String,
+      pngBase64: json['pngBase64'] as String,
     );
 
 Map<String, dynamic> _$$_KIDToJson(_$_KID instance) => <String, dynamic>{
-      'kidPubliczny': instance.kidPubliczny,
-      'kidPrywatny': instance.kidPrywatny,
+      'pub': instance.pub,
+      'prv': instance.prv,
+      'pngBase64': instance.pngBase64,
     };

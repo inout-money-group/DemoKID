@@ -12,10 +12,10 @@ class KIDWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text('kidPubliczny:', style: Theme.of(context).textTheme.subtitle2),
-        Text(kid.kidPubliczny),
+        Text(kid.pub),
         const SizedBox(height: 4),
         Text('kidPrywatny:', style: Theme.of(context).textTheme.subtitle2),
-        Text(kid.kidPrywatny),
+        Text(kid.pub),
         const SizedBox(height: 6),
         SizedBox(
           width: double.maxFinite,
